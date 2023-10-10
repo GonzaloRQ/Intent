@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -19,35 +19,39 @@ class MainActivity : AppCompatActivity(){
         val botonGoToWeb = findViewById<Button>(R.id.goToWeb)
 
         botonAlarma.setOnClickListener {
-            val intentAlarm = Intent(AlarmClock.ACTION_SET_ALARM).apply {
-                putExtra(AlarmClock.EXTRA_HOUR, 10)
-                putExtra(AlarmClock.EXTRA_MINUTES, 30)
-            }
-                startActivity(intentAlarm)
+            openAlarm(10, 30)
         }
 
         botonWebSearch.setOnClickListener {
-            val intentWeb = Intent(Intent.ACTION_WEB_SEARCH).apply {
-                putExtra(SearchManager.QUERY, "https://www.youtube.com/watch?v=nUHKOgHgQc4&ab_channel=FarazHorserider")
-            }
-
-                startActivity(intentWeb)
-
+            openWebSearch("https://www.youtube.com/watch?v=nUHKOgHgQc4&ab_channel=FarazHorserider")
         }
 
         botonGoToWeb.setOnClickListener {
-            val intentViewWeb = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("content://contacts/people/")
-
-            }
-
-                startActivity(intentViewWeb)
+            openWebPage("content://contacts/people/")
         }
+
+
     }
 
+    private fun openWebPage(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        startActivity(intent)
+    }
 
+    private fun openWebSearch(query: String) {
+        val intent = Intent(Intent.ACTION_WEB_SEARCH)
+        intent.putExtra(SearchManager.QUERY, query)
+        startActivity(intent)
+    }
 
-
+    private fun openAlarm(hour: Int, minutes: Int) {
+        val intentAlarm = Intent(AlarmClock.ACTION_SET_ALARM).apply {
+            putExtra(AlarmClock.EXTRA_HOUR, 10)
+            putExtra(AlarmClock.EXTRA_MINUTES, 30)
+        }
+        startActivity(intentAlarm)
+    }
 
 
 }
